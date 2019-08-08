@@ -20,17 +20,16 @@ public class ClueItemsOverlay extends WidgetItemOverlay {
     {
         this.client = client;
         this.config = config;
-
-        setPosition(OverlayPosition.DYNAMIC);
-        setLayer(OverlayLayer.ABOVE_WIDGETS);
+        showOnBank();
     }
 
 
     @Override
     public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget) {
-        Rectangle bounds = itemWidget.getCanvasBounds();
-        System.out.println(bounds);
-        graphics.setColor(HIGHLIGHT);
-        graphics.fill(bounds);
+        if (itemId == 1925  || itemId == 1926) {
+            Rectangle bounds = itemWidget.getCanvasBounds();
+            graphics.setColor(HIGHLIGHT);
+            graphics.fill(bounds);
+        }
     }
 }
