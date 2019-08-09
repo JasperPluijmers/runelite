@@ -11,42 +11,34 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-        name = "Clue Items",
-        description = "Shows which items in your bank are needed for emote clues",
-        tags = {"clue", "emote", "bank"}
+	name = "Clue Items",
+	description = "Shows which items in your bank are needed for emote clues",
+	tags = {"clue", "emote", "bank"}
 )
-public class ClueItemsPlugin extends Plugin {
+public class ClueItemsPlugin extends Plugin
+{
 
-    @Inject
-    private Client client;
+	@Inject
+	private ClueItemsOverlay overlay;
 
-    @Inject
-    private ClientThread clientThread;
+	@Inject
+	private OverlayManager overlayManager;
 
-    @Inject
-    private ClueItemsPlugin config;
+	@Provides
+	ClueItemsConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ClueItemsConfig.class);
+	}
 
-    @Inject
-    private ClueItemsOverlay overlay;
+	@Override
+	protected void startUp()
+	{
+		overlayManager.add(overlay);
+	}
 
-    @Inject
-    private OverlayManager overlayManager;
-
-    @Provides
-    ClueItemsConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(ClueItemsConfig.class);
-    }
-
-    @Override
-    protected void startUp()
-    {
-        overlayManager.add(overlay);
-    }
-
-    @Override
-    protected void shutDown()
-    {
-        overlayManager.remove(overlay);
-    }
+	@Override
+	protected void shutDown()
+	{
+		overlayManager.remove(overlay);
+	}
 }
