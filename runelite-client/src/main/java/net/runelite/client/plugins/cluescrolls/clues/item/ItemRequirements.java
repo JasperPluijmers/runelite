@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.lowmemory;
+package net.runelite.client.plugins.cluescrolls.clues.item;
 
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.api.EquipmentInventorySlot;
 
-@PluginDescriptor(
-	name = "Low Detail",
-	description = "Turn off ground decorations and certain textures, reducing memory usage",
-	tags = {"memory", "usage", "ground", "decorations"},
-	enabledByDefault = false
-)
-public class LowMemoryPlugin extends Plugin
+public class ItemRequirements
 {
-	@Inject
-	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
-
-	@Override
-	protected void startUp()
+	public static SingleItemRequirement item(int itemId)
 	{
-		clientThread.invoke(() -> client.changeMemoryMode(true));
+		return new SingleItemRequirement(itemId);
 	}
 
-	@Override
-	protected void shutDown()
+	public static RangeItemRequirement range(int startItemId, int endItemId)
 	{
-		clientThread.invoke(() -> client.changeMemoryMode(false));
+		return range(null, startItemId, endItemId);
+	}
+
+	public static RangeItemRequirement range(String name, int startItemId, int endItemId)
+	{
+		return new RangeItemRequirement(name, startItemId, endItemId);
+	}
+
+	public static AnyRequirementCollection any(String name, ItemRequirement... requirements)
+	{
+		return new AnyRequirementCollection(name, requirements);
+	}
+
+	public static AllRequirementsCollection all(ItemRequirement... requirements)
+	{
+		return new AllRequirementsCollection(requirements);
+	}
+
+	public static AllRequirementsCollection all(String name, ItemRequirement... requirements)
+	{
+		return new AllRequirementsCollection(name, requirements);
+	}
+
+	public static SlotLimitationRequirement emptySlot(String description, EquipmentInventorySlot... slots)
+	{
+		return new SlotLimitationRequirement(description, slots);
+	}
+
+	public static MultipleOfItemRequirement xOfItem(int itemId, int quantity)
+	{
+		return new MultipleOfItemRequirement(itemId, quantity);
 	}
 }
